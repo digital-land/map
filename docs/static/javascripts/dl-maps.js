@@ -74,7 +74,8 @@ function Map ($module) {
 }
 
 Map.prototype.init = function (params) {
-  this.setupOptions(params);
+  const _params = params || {};
+  this.setupOptions(_params);
   this.tiles = this.setTiles();
   this.map = this.createMap();
   this.featureGroups = {};
@@ -82,10 +83,14 @@ Map.prototype.init = function (params) {
     defaultBoundaryStyle: boundaryStyle,
     defaultBoundaryHoverStyle: boundaryHoverStyle
   };
-  this.$loader = this.$wrapper.querySelector('.dl-map__loader');
 
-  this.geojsonUrls = params.geojsonURLs || [];
-  const geojsonOptions = params.geojsonOptions || {};
+  if (this.$wrapper) {
+    this.$loader = this.$wrapper.querySelector('.dl-map__loader');
+  }
+
+  console.log("params", _params);
+  this.geojsonUrls = _params.geojsonURLs || [];
+  const geojsonOptions = _params.geojsonOptions || {};
   this.geojsonUrls = this.extractURLS();
   // if pointers to geojson provided add to the default featureGroup (a featureGroup has getBounds() func)
   if (this.geojsonUrls.length) {
@@ -321,7 +326,7 @@ const popupTemplate =
       '{datesSection}' +
     '</div>' +
     '<div class="bfs__footer">' +
-      'From resource: <a href="https://digital-land.github.io/resource/{resource}" class="govuk-link">{resourceTrunc}</a>' +
+      '<a href="{slug}" class="govuk-link">View complete record</a>' +
     '</div>' +
   '</div>';
 

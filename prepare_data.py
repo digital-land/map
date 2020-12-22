@@ -7,7 +7,7 @@ from bin.analyse_dataset import BrownfieldDatasetAnalyser
 from bin.organisation import fetch_organisations
 
 
-da = BrownfieldDatasetAnalyser("data/brownfield-land.csv")
+da = BrownfieldDatasetAnalyser("data/dataset.csv")
 
 
 def process_org(org):
