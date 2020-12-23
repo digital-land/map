@@ -1,6 +1,9 @@
 DATASET_PATH := data/dataset.csv
 LOCAL_FRONTEND :=../frontend
 
+# current git branch
+BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+
 black:
 	black .
 
@@ -15,13 +18,16 @@ collect:
 	wget -O $(DATASET_PATH) https://raw.githubusercontent.com/digital-land/brownfield-land-collection/main/dataset/brownfield-land.csv
 	wget -O data/deduped.csv https://raw.githubusercontent.com/digital-land/brownfield-land-collection/main/dataset/deduped.csv
 
-
 prepare: collect
 	python3 prepare_data.py
 
 map:
 	mkdir -p docs/
 	python3 render.py
+
+commit-docs::
+	git add docs data
+	git diff --quiet && git diff --staged --quiet || (git commit -m "Rebuilt docs $(shell date +%F)"; git push origin $(BRANCH))
 
 map/local:
 	mkdir -p docs/
