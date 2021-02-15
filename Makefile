@@ -16,7 +16,7 @@ clobber clean:
 collect:
 	mkdir -p data
 	wget -O $(DATASET_PATH) https://raw.githubusercontent.com/digital-land/brownfield-land-collection/main/dataset/brownfield-land.csv
-	wget -O data/deduped.csv https://raw.githubusercontent.com/digital-land/brownfield-land-collection/main/dataset/deduped.csv
+	# wget -O data/deduped.csv https://raw.githubusercontent.com/digital-land/brownfield-land-collection/main/dataset/deduped.csv
 
 prepare: collect
 	python3 prepare_data.py
