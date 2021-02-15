@@ -39,6 +39,21 @@ class BrownfieldDatasetAnalyser(DatasetAnalyser):
     def __init__(self, path):
         self.type = "brownfield-land"
         DatasetAnalyser.__init__(self, path)
+        self.dedupe_data()
+
+    def dedupe_data(self):
+        logging.debug("%s records before dedupe", len(self.json_data))
+        seen = set()
+        result = []
+        for row in self.json_data:
+            if row["organisation"] and row["site"]:
+                key = (row["organisation"], row["site"])
+                if key in seen:
+                    continue
+                seen.add(key)
+            result.append(row)
+        self.json_data = result
+        logging.debug("%s records after dedupe", len(self.json_data))
 
     # should this be moved to parent class
     def organisations(self):
