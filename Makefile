@@ -44,4 +44,7 @@ latest/js:
 	cd $(LOCAL_FRONTEND) && gulp js
 	rsync -r $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/ docs/static/javascripts/
 
-local: assets map/local 
+local: assets map/local
+
+copy:
+	cp -r src/ docs/
