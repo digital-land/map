@@ -10,7 +10,7 @@
 {% block content %}
 <div class="govuk-grid-row">
 	<div class="govuk-grid-column-full">
-  	<h1 class="govuk-heading-xl">Map of planning data</h1>
+  	<h1 class="govuk-heading-xl">National map of planning data</h1>
     </div>
 </div>
 
@@ -24,46 +24,16 @@
     </div>
     <div class="dl-map__side-panel__section">
       <ul class="govuk-list govuk-!-margin-bottom-0" data-module="layer-controls">
-        <li class="govuk-!-margin-bottom-2" data-layer-control="local-authority-district">
+        {% for layer in layers %}
+        <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}">
           <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="local-authority-district" name="local-authority-district" type="checkbox" value="local-authority-district" checked="checked">
-            <label class="govuk-label govuk-checkboxes__label" for="local-authority-district">
-              Local authority districts
+            <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" checked="checked">
+            <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
+              {{ layer.label }}
             </label>
           </div>
         </li>
-        <li class="govuk-!-margin-bottom-2" data-layer-control="conservation-area">
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="conservation-area" name="conservation-area" type="checkbox" value="conservation-area">
-            <label class="govuk-label govuk-checkboxes__label" for="conservation-area">
-              Conservation areas
-            </label>
-          </div>
-        </li>
-        <li class="govuk-!-margin-bottom-2" data-layer-control="brownfield-land">
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="brownfield-land" name="brownfield-land" type="checkbox" value="brownfield-land">
-            <label class="govuk-label govuk-checkboxes__label" for="brownfield-land">
-              Brownfield land
-            </label>
-          </div>
-        </li>
-        <li class="govuk-!-margin-bottom-2" data-layer-control="heritage-coast">
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="heritage-coast" name="heritage-coast" type="checkbox" value="heritage-coast" checked="checked">
-            <label class="govuk-label govuk-checkboxes__label" for="heritage-coast">
-              Heritage coast
-            </label>
-          </div>
-        </li>
-        <li class="govuk-!-margin-bottom-2" data-layer-control="area-of-outstanding-natural-beauty">
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="area-of-outstanding-natural-beauty" name="area-of-outstanding-natural-beauty" type="checkbox" value="area-of-outstanding-natural-beauty" checked="checked">
-            <label class="govuk-label govuk-checkboxes__label" for="area-of-outstanding-natural-beauty">
-              Area of outstanding natural beauty
-            </label>
-          </div>
-        </li>
+        {% endfor %}
       </ul>
     </div>
   </div>

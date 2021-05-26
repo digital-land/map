@@ -17,7 +17,17 @@ def render_bf_map():
 
 def render_national_map():
     map_template = env.get_template("national-map.html")
-    render("index.html", map_template)
+    layers = [
+        {"dataset": "local-authority-district", "label": "Local authority districts"},
+        {"dataset": "conservation-area", "label": "Conservation areas"},
+        {"dataset": "brownfield-land", "label": "Brownfield land"},
+        {"dataset": "heritage-coast", "label": "Heritage coast"},
+        {
+            "dataset": "area-of-outstanding-natural-beauty",
+            "label": "Areas of outstanding natural beauty",
+        },
+    ]
+    render("index.html", map_template, layers=layers)
 
 
 if __name__ == "__main__":
