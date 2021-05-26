@@ -47,4 +47,7 @@ latest/js:
 local: assets map/local
 
 copy:
+	mkdir -p docs/
 	cp -r src/ docs/
+
+render: copy map

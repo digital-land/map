@@ -43,7 +43,7 @@ jobs:
       run: make prepare
 
     - name: Render the map
-      run: make map
+      run: make render
 
     - name: Commit docs
       run: make commit-docs
