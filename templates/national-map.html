@@ -1,0 +1,211 @@
+{% extends "digital-land-frontend/dlf-base--full-width.html" %}
+
+{% set includesMap = true %}
+{% block pageTitle %}National map of planning data | Digital Land{% endblock %}
+
+{%- block dlHead %}
+<script src="./leaflet.permalink.min.js"></script>
+{% endblock -%}
+
+{% block content %}
+<div class="govuk-grid-row">
+	<div class="govuk-grid-column-full">
+  	<h1 class="govuk-heading-xl">National map of planning data</h1>
+    </div>
+</div>
+
+<p id="aria-label-national-map" class="govuk-body-l">National map of the planning data collected and collated by Digital Land.</p>
+
+<div class="dl-map__wrapper">
+  <div id="mapid" style="height: 700px;" aria-labelledby="aria-label-national-map"></div>
+  <div class="dl-map__side-panel">
+    <div class="dl-map__side-panel__section">
+      <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Data layers</h3>
+    </div>
+    <div class="dl-map__side-panel__section">
+      <ul class="govuk-list govuk-!-margin-bottom-0" data-module="layer-controls">
+        {% for layer in layers %}
+        <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}">
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" checked="checked">
+            <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
+              {{ layer.label }}
+            </label>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block bodyEnd %}
+{{ super() }}
+<script src="./layer-controls.js"></script>
+<script>
+  // callback used when layer control is clicked
+  function toggleLayer(map, datasetName, add) {
+    const layer = layerMap[datasetName]
+    if (add) {
+      map.addLayer(layer)
+
+      /* Not sure this is efficient
+          What to limit the number of fetch requests. If layer toggled off then on
+          with no move of the map there is no need to fetch all the features again */
+
+      if (map._fetchSinceControlAction) {
+        // if something has changed since layer last shown then trigger fetch all
+        // can further improve by fetching only reenable layer
+        fetchAll()
+        map._fetchSinceControlAction = false
+      }
+      if (layer.getLayers().length === 0) {
+        // if contains no layers then maybe no fetch has been done before
+        fetchAll()
+      }
+    } else {
+      map.removeLayer(layer)
+    }
+  }
+
+  var mappos = L.Permalink.getMapLocation(6, [53.865, -5.101]);
+  var theMap = L.map('mapid', {
+    center: mappos.center,
+    zoom: mappos.zoom
+  });
+  L.Permalink.setup(theMap);
+
+  const $controlsList = document.querySelector('[data-module="layer-controls"]')
+  const layerControlsComponent = new LayerControls($controlsList, theMap).init({
+    toggleControlCallback: toggleLayer
+  })
+
+  var baseUrl = "https://datasette-demo.digital-land.info/view_model"
+  var dlBaseUrl = "http://digital-land.github.io"
+
+  var pageSize = 100
+
+  // add the OpenStreetMap tiles
+  L.tileLayer('https://tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+  }).addTo(theMap);
+
+  let controller
+
+  function abortAll() {
+    controller.abort()
+  }
+
+  function fetchFeatures(progress, url, geoJsonLayer, signal, type_) {
+    return new Promise((resolve, reject) => fetch(url, { signal })
+      .then(response => {
+          if (response.status !== 200)  {
+            throw `${response.status}: ${response.statusText}`;
+          }
+          response.json().then(data => { 
+            geoJsonLayer.addData(data)
+
+            if(data.length >= pageSize) {
+              progress && progress(geoJsonLayer, type_);
+              lastItem = data[data.length - 1]
+              let nextUrl = url
+              nextUrl.searchParams.set("after", lastItem.id)
+              fetchFeatures(progress, nextUrl, geoJsonLayer, signal, type_).then(resolve).catch(reject)
+            } else {
+              resolve(geoJsonLayer);
+            }
+          }).catch(reject);
+      }).catch(reject));
+    }
+
+    function progressCallback(geoJsonLayer, type_) {
+            console.debug(`${geoJsonLayer.getLayers().length} features fetched for ${type_}`);
+    }
+
+    function buildUrl(bounds, zoomLevel, type=false, after_rowid=0) {
+      var query = "bounded_geography_simplified_paged"
+      if (zoomLevel > 11) {query = "bounded_geography_full_paged"}
+      if (type) {query = `${query}_by_type`}
+      if (type == "brownfield-land") {query = "bounded_geography_brownfield_land"}
+
+      url = new URL(`${baseUrl}/${query}.json?_json=geojson&_shape=arrayfirst&bbox_minx=${bounds._southWest.lng}&bbox_maxx=${bounds._northEast.lng}&bbox_miny=${bounds._southWest.lat}&bbox_maxy=${bounds._northEast.lat}&after=${after_rowid}`)
+
+      if (type) url.searchParams.set("type", type)
+
+      return url
+    }
+
+    var geoJsonLayerOptions = {
+      style: function(feature) {
+        switch (feature.properties.type) {
+          case 'local-authority-district': return {color: "#EE7800", weight: 2};
+          case 'conservation-area': return {color: "#78AA00", weight: 2};
+          case 'brownfield-land': return {color: "#0078ff", weight: 2};
+          case 'heritage-coast': return {color: "#912b88", weight: 2};
+          case 'area-of-outstanding-natural-beauty': return {color: "#d53880", weight: 2};
+        }
+      },
+      onEachFeature: onEachFeature,
+    }
+
+    var geojsonLocalAuthorityDistrict = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonConservationArea = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonHeritageCoast = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonAreaOfOutstandingNaturalBeauty = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    //var geojsonBrownfieldLand = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonBrownfieldLand = DLMaps.brownfieldSites.geojsonToLayer(false, geoJsonLayerOptions).addTo(theMap)
+  
+    var layerMap = {
+      "local-authority-district": geojsonLocalAuthorityDistrict,
+      "conservation-area": geojsonConservationArea,
+      "brownfield-land": geojsonBrownfieldLand,
+      "heritage-coast": geojsonHeritageCoast,
+      "area-of-outstanding-natural-beauty": geojsonAreaOfOutstandingNaturalBeauty,
+    }
+
+    function onEachFeature(feature, layer) {
+      if (feature.properties) {
+        layer.bindPopup(`
+          <h3>${feature.properties.name}</h3>
+          ${feature.properties.type}<br>
+          <a href=${dlBaseUrl}${feature.properties.slug}>${feature.properties.slug}</a>
+        `);
+      }
+    }
+
+    function fetchAll(bounds=theMap.getBounds()) {
+      if (controller) {
+        console.log("controller.abort()")
+        controller && controller.abort()
+      }
+      for (const [key, value] of Object.entries(layerMap)) {
+        value.clearLayers()
+      }
+      controller = new AbortController();
+      layerControlsComponent.enabledLayers().forEach(layer => {
+        let type_ = layer.dataset.layerControl
+        let zoom = theMap.getZoom()
+        if (type_ == "brownfield-land" && zoom < 13) {return}
+
+        console.log("fetching", type_)
+        fetchFeatures(progressCallback, buildUrl(bounds, zoom, type_), layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
+          console.log("fetch complete", type_)
+        }).catch(() => {
+          console.log("caught error from fetch", type_)
+          console.error
+        })
+      })
+    }
+
+    theMap.on('moveend', function(event){
+      var bounds = event.target.getBounds()
+      fetchAll(bounds)
+      theMap._fetchSinceControlAction = true
+    });
+
+    fetchAll()
+
+</script>
+{% endblock %}
