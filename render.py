@@ -12,7 +12,7 @@ env.globals["includeAutocomplete"] = True
 def render_bf_map():
     bf_map_template = env.get_template("brownfield-land-map.html")
     data = read_in_json("data/organisation_boundary_data.json")
-    render("national-map-of-brownfield-land.html", bf_map_template, data=data)
+    render("brownfield-land/index.html", bf_map_template, data=data)
 
 
 def render_national_map():
