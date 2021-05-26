@@ -82,8 +82,6 @@
   })
 
   var baseUrl = "https://datasette-demo.digital-land.info/view_model"
-  <!-- baseUrl = "http://localhost:8091/view_model" -->
-
   var dlBaseUrl = "http://digital-land.github.io"
 
   var pageSize = 100
@@ -101,8 +99,6 @@
   }
 
   function fetchFeatures(progress, url, geoJsonLayer, signal, type_) {
-    <!-- console.debug("fetchFeatures", url.href) -->
-    <!-- console.debug("invalidateView", invalidateView) -->
     return new Promise((resolve, reject) => fetch(url, { signal })
       .then(response => {
           if (response.status !== 200)  {
@@ -192,9 +188,6 @@
         let type_ = layer.dataset.layerControl
         let zoom = theMap.getZoom()
         if (type_ == "brownfield-land" && zoom < 13) {return}
-
-        <!-- disable BFL for now - bounding box not working -->
-        <!-- if (type_ == "brownfield-land") {return} -->
 
         console.log("fetching", type_)
         fetchFeatures(progressCallback, buildUrl(bounds, zoom, type_), layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
