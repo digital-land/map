@@ -214,6 +214,15 @@ crossorigin="" />
           </div>
         </li>
         
+        <li class="govuk-!-margin-bottom-2" data-layer-control="ancient-woodland">
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="ancient-woodland" name="ancient-woodland" type="checkbox" value="ancient-woodland" >
+            <label class="govuk-label govuk-checkboxes__label" for="ancient-woodland">
+              Ancient woodland
+            </label>
+          </div>
+        </li>
+        
       </ul>
     </div>
   </div>
@@ -332,6 +341,7 @@ crossorigin="" />
   function toggleLayer(map, datasetName, add) {
     const layer = layerMap[datasetName]
     if (add) {
+      console.log("Debug: ", layer, datasetName)
       map.addLayer(layer)
 
       /* Not sure this is efficient
@@ -429,6 +439,7 @@ crossorigin="" />
           case 'brownfield-land': return {color: "#0078ff", weight: 2};
           case 'heritage-coast': return {color: "#912b88", weight: 2};
           case 'area-of-outstanding-natural-beauty': return {color: "#d53880", weight: 2};
+          case 'ancient-woodland': return {color: "#00703c", weight: 2};
         }
       },
       onEachFeature: onEachFeature,
@@ -438,6 +449,7 @@ crossorigin="" />
     var geojsonConservationArea = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonHeritageCoast = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonAreaOfOutstandingNaturalBeauty = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonAncientWoodland = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     //var geojsonBrownfieldLand = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonBrownfieldLand = DLMaps.brownfieldSites.geojsonToLayer(false, geoJsonLayerOptions).addTo(theMap)
   
@@ -447,6 +459,7 @@ crossorigin="" />
       "brownfield-land": geojsonBrownfieldLand,
       "heritage-coast": geojsonHeritageCoast,
       "area-of-outstanding-natural-beauty": geojsonAreaOfOutstandingNaturalBeauty,
+      "ancient-woodland": geojsonAncientWoodland
     }
 
     function onEachFeature(feature, layer) {
@@ -471,7 +484,10 @@ crossorigin="" />
       layerControlsComponent.enabledLayers().forEach(layer => {
         let type_ = layer.dataset.layerControl
         let zoom = theMap.getZoom()
+
+        // limit layers with a lot of features to only appear at set zoom level
         if (type_ == "brownfield-land" && zoom < 13) {return}
+        if (type_ == "ancient-woodland" && zoom < 11) {return}
 
         console.log("fetching", type_)
         fetchFeatures(progressCallback, buildUrl(bounds, zoom, type_), layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
