@@ -30,6 +30,7 @@ def render_national_map():
             "dataset": "area-of-outstanding-natural-beauty",
             "label": "Areas of outstanding natural beauty",
         },
+        {"dataset": "ancient-woodland", "label": "Ancient woodland"},
     ]
     render("index.html", map_template, layers=layers)
 

@@ -48,6 +48,7 @@
   function toggleLayer(map, datasetName, add) {
     const layer = layerMap[datasetName]
     if (add) {
+      console.log("Debug: ", layer, datasetName)
       map.addLayer(layer)
 
       /* Not sure this is efficient
@@ -145,6 +146,7 @@
           case 'brownfield-land': return {color: "#0078ff", weight: 2};
           case 'heritage-coast': return {color: "#912b88", weight: 2};
           case 'area-of-outstanding-natural-beauty': return {color: "#d53880", weight: 2};
+          case 'ancient-woodland': return {color: "#d53880", weight: 2};
         }
       },
       onEachFeature: onEachFeature,
@@ -154,6 +156,7 @@
     var geojsonConservationArea = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonHeritageCoast = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonAreaOfOutstandingNaturalBeauty = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonAncientWoodland = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     //var geojsonBrownfieldLand = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonBrownfieldLand = DLMaps.brownfieldSites.geojsonToLayer(false, geoJsonLayerOptions).addTo(theMap)
   
@@ -163,6 +166,7 @@
       "brownfield-land": geojsonBrownfieldLand,
       "heritage-coast": geojsonHeritageCoast,
       "area-of-outstanding-natural-beauty": geojsonAreaOfOutstandingNaturalBeauty,
+      "ancient-woodland": geojsonAncientWoodland
     }
 
     function onEachFeature(feature, layer) {
