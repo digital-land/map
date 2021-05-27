@@ -1,5 +1,7 @@
 DATASET_PATH := data/dataset.csv
 LOCAL_FRONTEND :=../frontend
+SOURCE_URL=https://raw.githubusercontent.com/digital-land/
+LFS_SOURCE_URL=https://media.githubusercontent.com/media/digital-land/
 
 # current git branch
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
@@ -15,7 +17,7 @@ clobber clean:
 
 collect:
 	mkdir -p data
-	wget -O $(DATASET_PATH) https://media.githubusercontent.com/media/digital-land/brownfield-land-collection/main/dataset/brownfield-land.csv
+	curl -qsL '$(LFS_SOURCE_URL)brownfield-land-collection/main/dataset/brownfield-land.csv' > $(DATASET_PATH)
 
 prepare: collect
 	python3 prepare_data.py
