@@ -27,7 +27,7 @@
         {% for layer in layers %}
         <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}">
           <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" checked="checked">
+            <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
             <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
               {{ layer.label }}
             </label>

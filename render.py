@@ -18,7 +18,11 @@ def render_bf_map():
 def render_national_map():
     map_template = env.get_template("national-map.html")
     layers = [
-        {"dataset": "local-authority-district", "label": "Local authority districts"},
+        {
+            "dataset": "local-authority-district",
+            "label": "Local authority districts",
+            "checked": True,
+        },
         {"dataset": "conservation-area", "label": "Conservation areas"},
         {"dataset": "brownfield-land", "label": "Brownfield land"},
         {"dataset": "heritage-coast", "label": "Heritage coast"},
