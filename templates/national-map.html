@@ -46,6 +46,9 @@
             <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
             <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
               {{ layer.label }}
+              {% if layer.active_zoom_level %}
+                <div class="dl-small-text secondary-text">Only visible at zoom level {{ layer.active_zoom_level }} or higher</div>
+              {% endif %}
             </label>
           </div>
         </li>

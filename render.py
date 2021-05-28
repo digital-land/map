@@ -24,7 +24,11 @@ def render_national_map():
             "checked": True,
         },
         {"dataset": "conservation-area", "label": "Conservation areas"},
-        {"dataset": "brownfield-land", "label": "Brownfield land"},
+        {
+            "dataset": "brownfield-land",
+            "label": "Brownfield land",
+            "active_zoom_level": 13,
+        },
         {"dataset": "heritage-coast", "label": "Heritage coast"},
         {
             "dataset": "area-of-outstanding-natural-beauty",
