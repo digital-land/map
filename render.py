@@ -23,6 +23,7 @@ def render_national_map():
             "label": "Local authority districts",
             "checked": True,
         },
+        {"dataset": "parish", "label": "Parishes"},
         {"dataset": "conservation-area", "label": "Conservation areas"},
         {"dataset": "brownfield-land", "label": "Brownfield land"},
         {"dataset": "heritage-coast", "label": "Heritage coast"},
