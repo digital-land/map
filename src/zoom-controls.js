@@ -12,7 +12,7 @@ ZoomControls.prototype.init = function (params) {
   }
   this.$module.classList.remove('js-hidden')
 
-  const $buttons = this.$module.querySelectorAll(this.buttonSelector)
+  const $buttons = this.$module.querySelectorAll('.' + this.buttonClass)
   this.$buttons = Array.prototype.slice.call($buttons)
 
   this.$counter = this.$module.querySelector(this.counterSelector)
@@ -34,9 +34,14 @@ ZoomControls.prototype.init = function (params) {
 
 ZoomControls.prototype.clickHandler = function (e) {
   e.preventDefault()
-  const $clickedControl = e.target
+  const $clickedEl = e.target
+  let $clickedControl = $clickedEl
+  // check if button was pressed
+  // if contained span then find button
+  if (!$clickedEl.classList.contains(this.buttonClass)) {
+    $clickedControl = $clickedEl.closest('.' + this.buttonClass)
+  }
   this.zoom($clickedControl.dataset.zoomControl)
-  console.log("clicked", $clickedControl)
 }
 
 ZoomControls.prototype.zoom = function (direction) {
@@ -50,6 +55,6 @@ ZoomControls.prototype.zoomHandler = function (e) {
 
 ZoomControls.prototype.setupOptions = function (params) {
   params = params || {}
-  this.buttonSelector = params.buttonSelector || '.zoom-controls__btn'
+  this.buttonClass = params.buttonClass || 'zoom-controls__btn'
   this.counterSelector = params.counterSelector || '.zoom-controls__count'
 }
