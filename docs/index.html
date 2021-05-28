@@ -178,6 +178,15 @@ crossorigin="" />
           </div>
         </li>
         
+        <li class="govuk-!-margin-bottom-2" data-layer-control="parish">
+          <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" id="parish" name="parish" type="checkbox" value="parish" >
+            <label class="govuk-label govuk-checkboxes__label" for="parish">
+              Parishes
+            </label>
+          </div>
+        </li>
+        
         <li class="govuk-!-margin-bottom-2" data-layer-control="conservation-area">
           <div class="govuk-checkboxes__item">
             <input class="govuk-checkboxes__input" id="conservation-area" name="conservation-area" type="checkbox" value="conservation-area" >
@@ -435,6 +444,7 @@ crossorigin="" />
       style: function(feature) {
         switch (feature.properties.type) {
           case 'local-authority-district': return {color: "#EE7800", weight: 2};
+          case 'parish': return {color: "#5694ca", weight: 2};
           case 'conservation-area': return {color: "#78AA00", weight: 2};
           case 'brownfield-land': return {color: "#0078ff", weight: 2};
           case 'heritage-coast': return {color: "#912b88", weight: 2};
@@ -450,6 +460,7 @@ crossorigin="" />
     var geojsonHeritageCoast = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonAreaOfOutstandingNaturalBeauty = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonAncientWoodland = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonParish = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     //var geojsonBrownfieldLand = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonBrownfieldLand = DLMaps.brownfieldSites.geojsonToLayer(false, geoJsonLayerOptions).addTo(theMap)
   
@@ -459,7 +470,8 @@ crossorigin="" />
       "brownfield-land": geojsonBrownfieldLand,
       "heritage-coast": geojsonHeritageCoast,
       "area-of-outstanding-natural-beauty": geojsonAreaOfOutstandingNaturalBeauty,
-      "ancient-woodland": geojsonAncientWoodland
+      "ancient-woodland": geojsonAncientWoodland,
+      "parish": geojsonParish
     }
 
     function onEachFeature(feature, layer) {
@@ -488,6 +500,7 @@ crossorigin="" />
         // limit layers with a lot of features to only appear at set zoom level
         if (type_ == "brownfield-land" && zoom < 13) {return}
         if (type_ == "ancient-woodland" && zoom < 11) {return}
+        if (type_ == "parish" && zoom < 10) {return}
 
         console.log("fetching", type_)
         fetchFeatures(progressCallback, buildUrl(bounds, zoom, type_), layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
