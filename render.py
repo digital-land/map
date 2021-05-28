@@ -23,7 +23,11 @@ def render_national_map():
             "label": "Local authority districts",
             "checked": True,
         },
-        {"dataset": "parish", "label": "Parishes"},
+        {
+            "dataset": "parish",
+            "label": "Parishes",
+            "active_zoom_level": 10,
+        },
         {"dataset": "conservation-area", "label": "Conservation areas"},
         {
             "dataset": "brownfield-land",
@@ -35,7 +39,11 @@ def render_national_map():
             "dataset": "area-of-outstanding-natural-beauty",
             "label": "Areas of outstanding natural beauty",
         },
-        {"dataset": "ancient-woodland", "label": "Ancient woodland"},
+        {
+            "dataset": "ancient-woodland",
+            "label": "Ancient woodland",
+            "active_zoom_level": 11,
+        },
     ]
     render("index.html", map_template, layers=layers)
 
