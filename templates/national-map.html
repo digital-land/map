@@ -41,7 +41,7 @@
     <div class="dl-map__side-panel__section">
       <ul class="govuk-list govuk-!-margin-bottom-0" data-module="layer-controls">
         {% for layer in layers %}
-        <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}">
+        <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" {% if layer.active_zoom_level %}data-layer-control-zoom={{layer.active_zoom_level}}{% endif %}>
           <div class="govuk-checkboxes__item">
             <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
             <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
@@ -213,7 +213,15 @@
       layerControlsComponent.enabledLayers().forEach(layer => {
         let type_ = layer.dataset.layerControl
         let zoom = theMap.getZoom()
-        if (type_ == "brownfield-land" && zoom < 13) {return}
+        let zoomConstraint = layerControlsComponent.getZoomRestriction(layer)
+
+        // check for zoom constraint and only fetch if map is zoomed that far
+        if(typeof zoomConstraint !== "undefined") {
+          console.log(type_, "ZoomConstraint", layerControlsComponent.getZoomRestriction(layer))
+          if (zoom < zoomConstraint) {return}
+        }
+
+        //if (type_ == "brownfield-land" && zoom < 13) {return}
 
         console.log("fetching", type_)
         fetchFeatures(progressCallback, buildUrl(bounds, zoom, type_), layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
