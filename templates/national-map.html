@@ -17,6 +17,22 @@
 <p id="aria-label-national-map" class="govuk-body-l">National map of the planning data collected and collated by Digital Land.</p>
 
 <div class="dl-map__wrapper">
+
+  <div class="zoom-controls" data-module="zoom-controls">
+    <button class="zoom-controls__btn" data-zoom-control="in">
+      <span class="govuk-visually-hidden">Zoom in</span>
+      <span>+</span>
+    </button>
+    <span class="zoom-controls__count-container" aria-live="polite">
+      <span class="govuk-visually-hidden">The map is at zoom level </span>
+      <span class="zoom-controls__count">6</span>
+    </span>
+    <button class="zoom-controls__btn" data-zoom-control="out">
+      <span class="govuk-visually-hidden">Zoom out</span>
+      <span>-</span>
+    </button>
+  </div>
+
   <div id="mapid" style="height: 700px;" aria-labelledby="aria-label-national-map"></div>
   <div class="dl-map__side-panel">
     <div class="dl-map__side-panel__section">
@@ -25,11 +41,14 @@
     <div class="dl-map__side-panel__section">
       <ul class="govuk-list govuk-!-margin-bottom-0" data-module="layer-controls">
         {% for layer in layers %}
-        <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}">
+        <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" {% if layer.active_zoom_level %}data-layer-control-zoom={{layer.active_zoom_level}}{% endif %}>
           <div class="govuk-checkboxes__item">
             <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
             <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
               {{ layer.label }}
+              {% if layer.active_zoom_level %}
+                <div class="dl-small-text secondary-text">Only visible at zoom level {{ layer.active_zoom_level }} or higher</div>
+              {% endif %}
             </label>
           </div>
         </li>
@@ -43,6 +62,7 @@
 {% block bodyEnd %}
 {{ super() }}
 <script src="./layer-controls.js"></script>
+<script src="./zoom-controls.js"></script>
 <script>
   // callback used when layer control is clicked
   function toggleLayer(map, datasetName, add) {
@@ -77,10 +97,16 @@
   });
   L.Permalink.setup(theMap);
 
+  // setup the layer controls
   const $controlsList = document.querySelector('[data-module="layer-controls"]')
   const layerControlsComponent = new LayerControls($controlsList, theMap).init({
     toggleControlCallback: toggleLayer
   })
+
+  // setup the zoom controls
+  const $zoomControls = document.querySelector('[data-module="zoom-controls"]')
+  const zoomControlsComponent = new ZoomControls($zoomControls, theMap, mappos.zoom).init({})
+
 
   var baseUrl = "https://datasette-demo.digital-land.info/view_model"
   var dlBaseUrl = "http://digital-land.github.io"
@@ -194,9 +220,15 @@
       layerControlsComponent.enabledLayers().forEach(layer => {
         let type_ = layer.dataset.layerControl
         let zoom = theMap.getZoom()
+        let zoomConstraint = layerControlsComponent.getZoomRestriction(layer)
 
-        // limit layers with a lot of features to only appear at set zoom level
-        if (type_ == "brownfield-land" && zoom < 13) {return}
+        // check for zoom constraint and only fetch if map is zoomed that far
+        if(typeof zoomConstraint !== "undefined") {
+          console.log(type_, "ZoomConstraint", layerControlsComponent.getZoomRestriction(layer))
+          if (zoom < zoomConstraint) {return}
+        }
+
+        //if (type_ == "brownfield-land" && zoom < 13) {return}
         if (type_ == "ancient-woodland" && zoom < 11) {return}
         if (type_ == "parish" && zoom < 10) {return}
 
