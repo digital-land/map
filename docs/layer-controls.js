@@ -137,6 +137,10 @@ LayerControls.prototype.datasetName = function ($control) {
   return $control.dataset.layerControl
 }
 
+LayerControls.prototype.getZoomRestriction = function ($control) {
+  return $control.dataset.layerControlZoom
+}
+
 LayerControls.prototype.setupOptions = function (params) {
   params = params || {}
   this.layerControlSelector = params.layerControlSelector || '[data-layer-control]'
