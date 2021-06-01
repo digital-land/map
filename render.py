@@ -17,35 +17,53 @@ def render_bf_map():
 
 def render_national_map():
     map_template = env.get_template("national-map.html")
-    layers = [
+    all_layers = [
         {
             "dataset": "local-authority-district",
             "label": "Local authority districts",
             "checked": True,
+            "zoom_constraint": False,
         },
         {
             "dataset": "parish",
             "label": "Parishes",
             "active_zoom_level": 10,
+            "zoom_constraint": True,
         },
-        {"dataset": "conservation-area", "label": "Conservation areas"},
+        {
+            "dataset": "conservation-area",
+            "label": "Conservation areas",
+            "zoom_constraint": False,
+        },
         {
             "dataset": "brownfield-land",
             "label": "Brownfield land",
             "active_zoom_level": 13,
+            "zoom_constraint": True,
         },
-        {"dataset": "heritage-coast", "label": "Heritage coast"},
+        {
+            "dataset": "heritage-coast",
+            "label": "Heritage coast",
+            "zoom_constraint": False,
+        },
         {
             "dataset": "area-of-outstanding-natural-beauty",
             "label": "Areas of outstanding natural beauty",
+            "zoom_constraint": False,
         },
         {
             "dataset": "ancient-woodland",
             "label": "Ancient woodland",
             "active_zoom_level": 11,
+            "zoom_constraint": True,
         },
     ]
-    render("index.html", map_template, layers=layers)
+    render(
+        "index.html",
+        map_template,
+        layers=[l for l in all_layers if not l["zoom_constraint"]],
+        layers_with_constraint=[l for l in all_layers if l["zoom_constraint"]],
+    )
 
 
 if __name__ == "__main__":
