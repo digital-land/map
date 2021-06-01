@@ -177,6 +177,8 @@ crossorigin="" />
     </button>
   </div>
 
+  
+
   <div id="mapid" style="height: 700px;" aria-labelledby="aria-label-national-map"></div>
   <div class="dl-map__side-panel">
     <div class="dl-map__side-panel__section">
@@ -185,83 +187,99 @@ crossorigin="" />
     <div class="dl-map__side-panel__section">
       <ul class="govuk-list govuk-!-margin-bottom-0" data-module="layer-controls">
         
-        <li class="govuk-!-margin-bottom-2" data-layer-control="local-authority-district" >
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="local-authority-district" name="local-authority-district" type="checkbox" value="local-authority-district" checked=&#39;checked&#39;>
-            <label class="govuk-label govuk-checkboxes__label" for="local-authority-district">
-              Local authority districts
-              
-            </label>
-          </div>
-        </li>
         
-        <li class="govuk-!-margin-bottom-2" data-layer-control="parish" data-layer-control-zoom=10>
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="parish" name="parish" type="checkbox" value="parish" >
-            <label class="govuk-label govuk-checkboxes__label" for="parish">
-              Parishes
-              
-                <div class="dl-small-text secondary-text">Only visible at zoom level 10 or higher</div>
-              
-            </label>
-          </div>
-        </li>
+  <li class="govuk-!-margin-bottom-2" data-layer-control="local-authority-district" >
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="local-authority-district" name="local-authority-district" type="checkbox" value="local-authority-district" checked=&#39;checked&#39;>
+      <label class="govuk-label govuk-checkboxes__label" for="local-authority-district">
+        Local authority districts
         
-        <li class="govuk-!-margin-bottom-2" data-layer-control="conservation-area" >
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="conservation-area" name="conservation-area" type="checkbox" value="conservation-area" >
-            <label class="govuk-label govuk-checkboxes__label" for="conservation-area">
-              Conservation areas
-              
-            </label>
-          </div>
-        </li>
+      </label>
+    </div>
+  </li>
+  
         
-        <li class="govuk-!-margin-bottom-2" data-layer-control="brownfield-land" data-layer-control-zoom=13>
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="brownfield-land" name="brownfield-land" type="checkbox" value="brownfield-land" >
-            <label class="govuk-label govuk-checkboxes__label" for="brownfield-land">
-              Brownfield land
-              
-                <div class="dl-small-text secondary-text">Only visible at zoom level 13 or higher</div>
-              
-            </label>
-          </div>
-        </li>
         
-        <li class="govuk-!-margin-bottom-2" data-layer-control="heritage-coast" >
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="heritage-coast" name="heritage-coast" type="checkbox" value="heritage-coast" >
-            <label class="govuk-label govuk-checkboxes__label" for="heritage-coast">
-              Heritage coast
-              
-            </label>
-          </div>
-        </li>
+  <li class="govuk-!-margin-bottom-2" data-layer-control="conservation-area" >
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="conservation-area" name="conservation-area" type="checkbox" value="conservation-area" >
+      <label class="govuk-label govuk-checkboxes__label" for="conservation-area">
+        Conservation areas
         
-        <li class="govuk-!-margin-bottom-2" data-layer-control="area-of-outstanding-natural-beauty" >
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="area-of-outstanding-natural-beauty" name="area-of-outstanding-natural-beauty" type="checkbox" value="area-of-outstanding-natural-beauty" >
-            <label class="govuk-label govuk-checkboxes__label" for="area-of-outstanding-natural-beauty">
-              Areas of outstanding natural beauty
-              
-            </label>
-          </div>
-        </li>
+      </label>
+    </div>
+  </li>
+  
         
-        <li class="govuk-!-margin-bottom-2" data-layer-control="ancient-woodland" data-layer-control-zoom=11>
-          <div class="govuk-checkboxes__item">
-            <input class="govuk-checkboxes__input" id="ancient-woodland" name="ancient-woodland" type="checkbox" value="ancient-woodland" >
-            <label class="govuk-label govuk-checkboxes__label" for="ancient-woodland">
-              Ancient woodland
-              
-                <div class="dl-small-text secondary-text">Only visible at zoom level 11 or higher</div>
-              
-            </label>
-          </div>
-        </li>
         
-      </ul>
+  <li class="govuk-!-margin-bottom-2" data-layer-control="heritage-coast" >
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="heritage-coast" name="heritage-coast" type="checkbox" value="heritage-coast" >
+      <label class="govuk-label govuk-checkboxes__label" for="heritage-coast">
+        Heritage coast
+        
+      </label>
+    </div>
+  </li>
+  
+        
+        
+  <li class="govuk-!-margin-bottom-2" data-layer-control="area-of-outstanding-natural-beauty" >
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="area-of-outstanding-natural-beauty" name="area-of-outstanding-natural-beauty" type="checkbox" value="area-of-outstanding-natural-beauty" >
+      <label class="govuk-label govuk-checkboxes__label" for="area-of-outstanding-natural-beauty">
+        Areas of outstanding natural beauty
+        
+      </label>
+    </div>
+  </li>
+  
+        
+          <p class="govuk-body">Large datasets are only visible at zoom level <span data-layers-controls-zoom-constraint="10">10</span> or higher.</p>
+        
+        
+  <li class="govuk-!-margin-bottom-2" data-layer-control="parish" data-layer-control-zoom=10>
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="parish" name="parish" type="checkbox" value="parish" >
+      <label class="govuk-label govuk-checkboxes__label" for="parish">
+        Parishes
+        
+          <div class="dl-small-text secondary-text">From zoom level 10</div>
+        
+      </label>
+    </div>
+  </li>
+  
+        
+        
+  <li class="govuk-!-margin-bottom-2" data-layer-control="brownfield-land" data-layer-control-zoom=13>
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="brownfield-land" name="brownfield-land" type="checkbox" value="brownfield-land" >
+      <label class="govuk-label govuk-checkboxes__label" for="brownfield-land">
+        Brownfield land
+        
+          <div class="dl-small-text secondary-text">From zoom level 13</div>
+        
+      </label>
+    </div>
+  </li>
+  
+        
+        
+  <li class="govuk-!-margin-bottom-2" data-layer-control="ancient-woodland" data-layer-control-zoom=11>
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="ancient-woodland" name="ancient-woodland" type="checkbox" value="ancient-woodland" >
+      <label class="govuk-label govuk-checkboxes__label" for="ancient-woodland">
+        Ancient woodland
+        
+          <div class="dl-small-text secondary-text">From zoom level 11</div>
+        
+      </label>
+    </div>
+  </li>
+  
+        
+        </ul>
     </div>
   </div>
 </div>
@@ -486,6 +504,8 @@ crossorigin="" />
           case 'heritage-coast': return {color: "#912b88", weight: 2};
           case 'area-of-outstanding-natural-beauty': return {color: "#d53880", weight: 2};
           case 'ancient-woodland': return {color: "#00703c", weight: 2};
+          case 'protected-wreck-site': return {color: "#d4351c", weight: 2};
+          case 'green-belt': return {color: "#85994b", weight: 2};
         }
       },
       onEachFeature: onEachFeature,
@@ -497,6 +517,8 @@ crossorigin="" />
     var geojsonAreaOfOutstandingNaturalBeauty = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonAncientWoodland = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonParish = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonProtectedWreckSite = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
+    var geojsonGreenBelt = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     //var geojsonBrownfieldLand = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
     var geojsonBrownfieldLand = DLMaps.brownfieldSites.geojsonToLayer(false, geoJsonLayerOptions).addTo(theMap)
   
@@ -507,7 +529,9 @@ crossorigin="" />
       "heritage-coast": geojsonHeritageCoast,
       "area-of-outstanding-natural-beauty": geojsonAreaOfOutstandingNaturalBeauty,
       "ancient-woodland": geojsonAncientWoodland,
-      "parish": geojsonParish
+      "parish": geojsonParish,
+      "protected-wreck-site": geojsonProtectedWreckSite,
+      "green-belt": geojsonGreenBelt,
     }
 
     function onEachFeature(feature, layer) {
