@@ -19,7 +19,8 @@ collect:
 	mkdir -p data
 	curl -qsL '$(LFS_SOURCE_URL)brownfield-land-collection/main/dataset/brownfield-land.csv' > $(DATASET_PATH)
 
-prepare: collect
+#prepare: collect
+prepare:
 	python3 prepare_data.py
 
 map:
