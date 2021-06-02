@@ -50,6 +50,6 @@ local: assets copy map/local
 
 copy:
 	mkdir -p docs/
-	cp -r src/* docs/
+	cp -r src/js/* docs/
 
 render: copy map
