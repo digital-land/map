@@ -23,39 +23,46 @@ def render_national_map():
             "label": "Local authority districts",
             "checked": True,
             "zoom_constraint": False,
+            "colour": "#EE7800",
         },
         {
             "dataset": "parish",
             "label": "Parishes",
             "active_zoom_level": 10,
             "zoom_constraint": True,
+            "colour": "#5694ca",
         },
         {
             "dataset": "conservation-area",
             "label": "Conservation areas",
             "zoom_constraint": False,
+            "colour": "#78AA00",
         },
         {
             "dataset": "brownfield-land",
             "label": "Brownfield land",
             "active_zoom_level": 13,
             "zoom_constraint": True,
+            "colour": "#0078ff",
         },
         {
             "dataset": "heritage-coast",
             "label": "Heritage coast",
             "zoom_constraint": False,
+            "colour": "#912b88",
         },
         {
             "dataset": "area-of-outstanding-natural-beauty",
             "label": "Areas of outstanding natural beauty",
             "zoom_constraint": False,
+            "colour": "#d53880",
         },
         {
             "dataset": "ancient-woodland",
             "label": "Ancient woodland",
             "active_zoom_level": 11,
             "zoom_constraint": True,
+            "colour": "#00703c",
         },
     ]
     render(

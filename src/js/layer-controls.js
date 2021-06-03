@@ -66,6 +66,7 @@ LayerControls.prototype.onControlChkbxChange = function (e) {
   }
 }
 
+// should this return an array or a single control?
 LayerControls.prototype.get = function (dataset) {
   return this.$controls.filter($control => $control.dataset.layerControl === dataset)
 }
@@ -117,6 +118,7 @@ LayerControls.prototype.updateURL = function () {
   enabledLayers.forEach(name => urlParams.append('layer', name))
   console.log(urlParams.toString())
   const newURL = window.location.pathname + '?' + urlParams.toString() + window.location.hash
+  // add entry to history, does not fire event so need to call setControls
   window.history.pushState({}, '', newURL)
   this.setControls()
 }
@@ -139,6 +141,10 @@ LayerControls.prototype.datasetName = function ($control) {
 
 LayerControls.prototype.getZoomRestriction = function ($control) {
   return $control.dataset.layerControlZoom
+}
+
+LayerControls.prototype.getStyle = function ($control) {
+  return $control.dataset.layerColour
 }
 
 LayerControls.prototype.setupOptions = function (params) {

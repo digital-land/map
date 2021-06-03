@@ -34,7 +34,9 @@
   </div>
 
   {% macro layerControlItem(layer) %}
-  <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" {% if layer.active_zoom_level %}data-layer-control-zoom={{layer.active_zoom_level}}{% endif %}>
+  <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" 
+  {% if layer.active_zoom_level %}data-layer-control-zoom={{layer.active_zoom_level}}{% endif %} 
+  {% if layer.colour %}data-layer-colour="{{ layer.colour }}"{% endif %}>
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
       <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
@@ -176,16 +178,12 @@
 
     var geoJsonLayerOptions = {
       style: function(feature) {
-        switch (feature.properties.type) {
-          case 'local-authority-district': return {color: "#EE7800", weight: 2};
-          case 'parish': return {color: "#5694ca", weight: 2};
-          case 'conservation-area': return {color: "#78AA00", weight: 2};
-          case 'brownfield-land': return {color: "#0078ff", weight: 2};
-          case 'heritage-coast': return {color: "#912b88", weight: 2};
-          case 'area-of-outstanding-natural-beauty': return {color: "#d53880", weight: 2};
-          case 'ancient-woodland': return {color: "#00703c", weight: 2};
-          case 'protected-wreck-site': return {color: "#d4351c", weight: 2};
-          case 'green-belt': return {color: "#85994b", weight: 2};
+        const $layerControl = layerControlsComponent.get(feature.properties.type)
+        const colour = layerControlsComponent.getStyle($layerControl[0])
+        if(typeof colour === "undefined") {
+          return {color: "#003078", weight: 2};
+        } else {
+          return {color: colour, weight: 2};
         }
       },
       onEachFeature: onEachFeature,
