@@ -57,6 +57,19 @@ def render_national_map():
             "active_zoom_level": 11,
             "colour": "#00703c",
         },
+        {"dataset": "green-belt", "label": "Green belt", "colour": "#85994b"},
+        {
+            "dataset": "world-heritage-site",
+            "label": "World heritage site",
+            "colour": "#012169",
+        },
+        {"dataset": "battlefield", "label": "Battlefields", "colour": "#4d2942"},
+        {
+            "dataset": "park-and-garden",
+            "label": "Parks and gardens",
+            "colour": "#36D373",
+            "active_zoom_level": 10,
+        },
     ]
     render(
         "index.html",

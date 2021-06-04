@@ -50,11 +50,11 @@
   {% endmacro %}
 
   <div id="mapid" style="height: 700px;" aria-labelledby="aria-label-national-map"></div>
-  <div class="dl-map__side-panel">
-    <div class="dl-map__side-panel__section">
+  <div class="dl-map__side-panel dl-map__side-panel--full">
+    <div class="dl-map__side-panel__heading">
       <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Data layers</h3>
     </div>
-    <div class="dl-map__side-panel__section">
+    <div class="dl-map__side-panel__content">
       <ul class="govuk-list govuk-!-margin-bottom-0" data-module="layer-controls">
         {% for layer in layers %}
         {{ layerControlItem(layer) }}
