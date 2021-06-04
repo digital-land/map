@@ -119,10 +119,8 @@
   const $zoomControls = document.querySelector('[data-module="zoom-controls"]')
   const zoomControlsComponent = new ZoomControls($zoomControls, theMap, mappos.zoom).init({})
 
-
+  // config
   var baseUrl = "https://datasette-demo.digital-land.info/view_model"
-  var dlBaseUrl = "http://digital-land.github.io"
-
   var pageSize = 100
 
   // add the OpenStreetMap tiles
@@ -163,7 +161,7 @@
             console.debug(`${geoJsonLayer.getLayers().length} features fetched for ${type_}`);
     }
 
-    function buildUrl(bounds, zoomLevel, type=false, after_rowid=0) {
+    function buildDataUrl(bounds, zoomLevel, type=false, after_rowid=0) {
       var query = "bounded_geography_simplified_paged"
       if (zoomLevel > 11) {query = "bounded_geography_full_paged"}
       if (type) {query = `${query}_by_type`}
@@ -197,7 +195,7 @@
         }
 
         console.log("fetching", type_)
-        fetchFeatures(progressCallback, buildUrl(bounds, zoom, type_), layerControlsComponent.layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
+        fetchFeatures(progressCallback, buildDataUrl(bounds, zoom, type_), layerControlsComponent.layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
           console.log("fetch complete", type_)
         }).catch((e) => {
           console.log("caught error from fetch", type_, e)
