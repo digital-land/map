@@ -52,8 +52,8 @@ LayerControls.prototype.init = function (params) {
     this.setControls()
   }
 
-  var boundControlChkbxChangeHandler = this.onControlChkbxChange.bind(this)
-
+  // listen for changes on each checkbox
+  const boundControlChkbxChangeHandler = this.onControlChkbxChange.bind(this)
   this.$controls.forEach(function ($control) {
     console.log(this)
     $control.addEventListener('change', boundControlChkbxChangeHandler, true)
@@ -64,23 +64,28 @@ LayerControls.prototype.init = function (params) {
 
 LayerControls.prototype.onControlChkbxChange = function (e) {
   console.log("I've been toggled", e.target, this)
-
+  // get the control containing changed checkbox
   var $clickedControl = e.target.closest(this.layerControlSelector)
 
-  const datasetName = this.datasetName($clickedControl)
-  console.log(datasetName)
+  // when a control is changed update the URL params
   this.updateURL()
 
   // run provided callback
   const enabled = this.getCheckbox($clickedControl).checked
   if (this.toggleControlCallback && isFunction(this.toggleControlCallback)) {
-    this.toggleControlCallback(this.map, this.datasetName($clickedControl), enabled)
+    this.toggleControlCallback(this.map, this.getDatasetName($clickedControl), enabled)
   }
 }
 
 // should this return an array or a single control?
-LayerControls.prototype.get = function (dataset) {
-  return this.$controls.filter($control => $control.dataset.layerControl === dataset)
+LayerControls.prototype.getControlByName = function (dataset) {
+  for (let i = 0; i < this.$controls.length; i++) {
+    const $control = this.$controls[i]
+    if ($control.dataset.layerControl === dataset) {
+      return $control
+    }
+  }
+  return undefined
 }
 
 LayerControls.prototype.createFeatureLayer = function () {
@@ -91,7 +96,7 @@ LayerControls.prototype.createAllFeatureLayers = function () {
   const layerToDatasetMap = {}
   const that = this
   this.$controls.forEach(function ($control) {
-    const dataset = that.datasetName($control)
+    const dataset = that.getDatasetName($control)
     let layer
     if (dataset === 'brownfield-land') {
       layer = DLMaps.brownfieldSites.geojsonToLayer(false, that.geoJsonLayerOptions).addTo(that.map)
@@ -104,8 +109,7 @@ LayerControls.prototype.createAllFeatureLayers = function () {
 }
 
 LayerControls.prototype.getLayerStyleOption = function (feature) {
-  const $control = this.get(feature.properties.type)
-  const colour = this.getStyle($control[0])
+  const colour = this.getStyle(this.getControlByName(feature.properties.type))
   if (typeof colour === 'undefined') {
     return { color: '#003078', weight: 2 }
   } else {
@@ -114,7 +118,7 @@ LayerControls.prototype.getLayerStyleOption = function (feature) {
 }
 
 LayerControls.prototype.enable = function ($control) {
-  console.log('enable', this.datasetName($control))
+  console.log('enable', this.getDatasetName($control))
   const $chkbx = $control.querySelector('input[type="checkbox"]')
   $chkbx.checked = true
   $control.dataset.layerControlActive = 'true'
@@ -122,7 +126,7 @@ LayerControls.prototype.enable = function ($control) {
 }
 
 LayerControls.prototype.disable = function ($control) {
-  console.log('disable', this.datasetName($control))
+  console.log('disable', this.getDatasetName($control))
   const $chkbx = $control.querySelector('input[type="checkbox"]')
   $chkbx.checked = false
   $control.dataset.layerControlActive = 'false'
@@ -142,8 +146,8 @@ LayerControls.prototype.setControls = function () {
     const disabledLayerNames = datasetNamesClone.filter(name => enabledLayerNames.indexOf(name) === -1)
 
     // map the names to the controls
-    const toEnable = enabledLayerNames.map(name => this.get(name)[0])
-    const toDisable = disabledLayerNames.map(name => this.get(name)[0])
+    const toEnable = enabledLayerNames.map(name => this.getControlByName(name))
+    const toDisable = disabledLayerNames.map(name => this.getControlByName(name))
     console.log(toEnable, toDisable)
 
     // pass correct this arg
@@ -154,7 +158,7 @@ LayerControls.prototype.setControls = function () {
 
 LayerControls.prototype.updateURL = function () {
   const urlParams = (new URL(document.location)).searchParams
-  const enabledLayers = this.enabledLayers().map($control => this.datasetName($control))
+  const enabledLayers = this.enabledLayers().map($control => this.getDatasetName($control))
 
   urlParams.delete('layer')
   enabledLayers.forEach(name => urlParams.append('layer', name))
@@ -177,7 +181,7 @@ LayerControls.prototype.disabledLayers = function () {
   return this.$controls.filter($control => !this.getCheckbox($control).checked)
 }
 
-LayerControls.prototype.datasetName = function ($control) {
+LayerControls.prototype.getDatasetName = function ($control) {
   return $control.dataset.layerControl
 }
 
