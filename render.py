@@ -74,10 +74,14 @@ def render_national_map():
     render(
         "index.html",
         map_template,
-        layers=[l for l in all_layers if l.get("active_zoom_level") is None],
-        layers_with_constraint=[
-            l for l in all_layers if l.get("active_zoom_level") is not None
-        ],
+        layers=sorted(
+            [l for l in all_layers if l.get("active_zoom_level") is None],
+            key=lambda x: x["label"],
+        ),
+        layers_with_constraint=sorted(
+            [l for l in all_layers if l.get("active_zoom_level") is not None],
+            key=lambda x: x["label"],
+        ),
     )
 
 
