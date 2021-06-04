@@ -180,21 +180,35 @@ crossorigin="" />
   
 
   <div id="mapid" style="height: 700px;" aria-labelledby="aria-label-national-map"></div>
-  <div class="dl-map__side-panel">
-    <div class="dl-map__side-panel__section">
+  <div class="dl-map__side-panel dl-map__side-panel--full">
+    <div class="dl-map__side-panel__heading">
       <h3 class="govuk-heading-s govuk-!-margin-bottom-0">Data layers</h3>
     </div>
-    <div class="dl-map__side-panel__section">
+    <div class="dl-map__side-panel__content">
       <ul class="govuk-list govuk-!-margin-bottom-0" data-module="layer-controls">
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="local-authority-district" 
+  <li class="govuk-!-margin-bottom-2" data-layer-control="area-of-outstanding-natural-beauty" 
    
-  data-layer-colour="#EE7800">
+  data-layer-colour="#d53880">
     <div class="govuk-checkboxes__item">
-      <input class="govuk-checkboxes__input" id="local-authority-district" name="local-authority-district" type="checkbox" value="local-authority-district" checked=&#39;checked&#39;>
-      <label class="govuk-label govuk-checkboxes__label" for="local-authority-district">
-        Local authority districts
+      <input class="govuk-checkboxes__input" id="area-of-outstanding-natural-beauty" name="area-of-outstanding-natural-beauty" type="checkbox" value="area-of-outstanding-natural-beauty" >
+      <label class="govuk-label govuk-checkboxes__label" for="area-of-outstanding-natural-beauty">
+        Areas of outstanding natural beauty
+        
+      </label>
+    </div>
+  </li>
+  
+        
+        
+  <li class="govuk-!-margin-bottom-2" data-layer-control="battlefield" 
+   
+  data-layer-colour="#4d2942">
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="battlefield" name="battlefield" type="checkbox" value="battlefield" >
+      <label class="govuk-label govuk-checkboxes__label" for="battlefield">
+        Battlefields
         
       </label>
     </div>
@@ -216,6 +230,20 @@ crossorigin="" />
   
         
         
+  <li class="govuk-!-margin-bottom-2" data-layer-control="green-belt" 
+   
+  data-layer-colour="#85994b">
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="green-belt" name="green-belt" type="checkbox" value="green-belt" >
+      <label class="govuk-label govuk-checkboxes__label" for="green-belt">
+        Green belt
+        
+      </label>
+    </div>
+  </li>
+  
+        
+        
   <li class="govuk-!-margin-bottom-2" data-layer-control="heritage-coast" 
    
   data-layer-colour="#912b88">
@@ -230,13 +258,27 @@ crossorigin="" />
   
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="area-of-outstanding-natural-beauty" 
+  <li class="govuk-!-margin-bottom-2" data-layer-control="local-authority-district" 
    
-  data-layer-colour="#d53880">
+  data-layer-colour="#EE7800">
     <div class="govuk-checkboxes__item">
-      <input class="govuk-checkboxes__input" id="area-of-outstanding-natural-beauty" name="area-of-outstanding-natural-beauty" type="checkbox" value="area-of-outstanding-natural-beauty" >
-      <label class="govuk-label govuk-checkboxes__label" for="area-of-outstanding-natural-beauty">
-        Areas of outstanding natural beauty
+      <input class="govuk-checkboxes__input" id="local-authority-district" name="local-authority-district" type="checkbox" value="local-authority-district" checked=&#39;checked&#39;>
+      <label class="govuk-label govuk-checkboxes__label" for="local-authority-district">
+        Local authority districts
+        
+      </label>
+    </div>
+  </li>
+  
+        
+        
+  <li class="govuk-!-margin-bottom-2" data-layer-control="world-heritage-site" 
+   
+  data-layer-colour="#012169">
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="world-heritage-site" name="world-heritage-site" type="checkbox" value="world-heritage-site" >
+      <label class="govuk-label govuk-checkboxes__label" for="world-heritage-site">
+        World heritage site
         
       </label>
     </div>
@@ -246,15 +288,15 @@ crossorigin="" />
           <p class="govuk-body">Large datasets are only visible at zoom level <span data-layers-controls-zoom-constraint="10">10</span> or higher.</p>
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="parish" 
-  data-layer-control-zoom=10 
-  data-layer-colour="#5694ca">
+  <li class="govuk-!-margin-bottom-2" data-layer-control="ancient-woodland" 
+  data-layer-control-zoom=11 
+  data-layer-colour="#00703c">
     <div class="govuk-checkboxes__item">
-      <input class="govuk-checkboxes__input" id="parish" name="parish" type="checkbox" value="parish" >
-      <label class="govuk-label govuk-checkboxes__label" for="parish">
-        Parishes
+      <input class="govuk-checkboxes__input" id="ancient-woodland" name="ancient-woodland" type="checkbox" value="ancient-woodland" >
+      <label class="govuk-label govuk-checkboxes__label" for="ancient-woodland">
+        Ancient woodland
         
-          <div class="dl-small-text secondary-text">From zoom level 10</div>
+          <div class="dl-small-text secondary-text">From zoom level 11</div>
         
       </label>
     </div>
@@ -278,15 +320,31 @@ crossorigin="" />
   
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="ancient-woodland" 
-  data-layer-control-zoom=11 
-  data-layer-colour="#00703c">
+  <li class="govuk-!-margin-bottom-2" data-layer-control="parish" 
+  data-layer-control-zoom=10 
+  data-layer-colour="#5694ca">
     <div class="govuk-checkboxes__item">
-      <input class="govuk-checkboxes__input" id="ancient-woodland" name="ancient-woodland" type="checkbox" value="ancient-woodland" >
-      <label class="govuk-label govuk-checkboxes__label" for="ancient-woodland">
-        Ancient woodland
+      <input class="govuk-checkboxes__input" id="parish" name="parish" type="checkbox" value="parish" >
+      <label class="govuk-label govuk-checkboxes__label" for="parish">
+        Parishes
         
-          <div class="dl-small-text secondary-text">From zoom level 11</div>
+          <div class="dl-small-text secondary-text">From zoom level 10</div>
+        
+      </label>
+    </div>
+  </li>
+  
+        
+        
+  <li class="govuk-!-margin-bottom-2" data-layer-control="park-and-garden" 
+  data-layer-control-zoom=10 
+  data-layer-colour="#36D373">
+    <div class="govuk-checkboxes__item">
+      <input class="govuk-checkboxes__input" id="park-and-garden" name="park-and-garden" type="checkbox" value="park-and-garden" >
+      <label class="govuk-label govuk-checkboxes__label" for="park-and-garden">
+        Parks and gardens
+        
+          <div class="dl-small-text secondary-text">From zoom level 10</div>
         
       </label>
     </div>
