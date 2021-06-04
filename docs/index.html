@@ -188,7 +188,9 @@ crossorigin="" />
       <ul class="govuk-list govuk-!-margin-bottom-0" data-module="layer-controls">
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="local-authority-district" >
+  <li class="govuk-!-margin-bottom-2" data-layer-control="local-authority-district" 
+   
+  data-layer-colour="#EE7800">
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="local-authority-district" name="local-authority-district" type="checkbox" value="local-authority-district" checked=&#39;checked&#39;>
       <label class="govuk-label govuk-checkboxes__label" for="local-authority-district">
@@ -200,7 +202,9 @@ crossorigin="" />
   
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="conservation-area" >
+  <li class="govuk-!-margin-bottom-2" data-layer-control="conservation-area" 
+   
+  data-layer-colour="#78AA00">
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="conservation-area" name="conservation-area" type="checkbox" value="conservation-area" >
       <label class="govuk-label govuk-checkboxes__label" for="conservation-area">
@@ -212,7 +216,9 @@ crossorigin="" />
   
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="heritage-coast" >
+  <li class="govuk-!-margin-bottom-2" data-layer-control="heritage-coast" 
+   
+  data-layer-colour="#912b88">
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="heritage-coast" name="heritage-coast" type="checkbox" value="heritage-coast" >
       <label class="govuk-label govuk-checkboxes__label" for="heritage-coast">
@@ -224,7 +230,9 @@ crossorigin="" />
   
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="area-of-outstanding-natural-beauty" >
+  <li class="govuk-!-margin-bottom-2" data-layer-control="area-of-outstanding-natural-beauty" 
+   
+  data-layer-colour="#d53880">
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="area-of-outstanding-natural-beauty" name="area-of-outstanding-natural-beauty" type="checkbox" value="area-of-outstanding-natural-beauty" >
       <label class="govuk-label govuk-checkboxes__label" for="area-of-outstanding-natural-beauty">
@@ -238,7 +246,9 @@ crossorigin="" />
           <p class="govuk-body">Large datasets are only visible at zoom level <span data-layers-controls-zoom-constraint="10">10</span> or higher.</p>
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="parish" data-layer-control-zoom=10>
+  <li class="govuk-!-margin-bottom-2" data-layer-control="parish" 
+  data-layer-control-zoom=10 
+  data-layer-colour="#5694ca">
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="parish" name="parish" type="checkbox" value="parish" >
       <label class="govuk-label govuk-checkboxes__label" for="parish">
@@ -252,7 +262,9 @@ crossorigin="" />
   
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="brownfield-land" data-layer-control-zoom=13>
+  <li class="govuk-!-margin-bottom-2" data-layer-control="brownfield-land" 
+  data-layer-control-zoom=13 
+  data-layer-colour="#0078ff">
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="brownfield-land" name="brownfield-land" type="checkbox" value="brownfield-land" >
       <label class="govuk-label govuk-checkboxes__label" for="brownfield-land">
@@ -266,7 +278,9 @@ crossorigin="" />
   
         
         
-  <li class="govuk-!-margin-bottom-2" data-layer-control="ancient-woodland" data-layer-control-zoom=11>
+  <li class="govuk-!-margin-bottom-2" data-layer-control="ancient-woodland" 
+  data-layer-control-zoom=11 
+  data-layer-colour="#00703c">
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="ancient-woodland" name="ancient-woodland" type="checkbox" value="ancient-woodland" >
       <label class="govuk-label govuk-checkboxes__label" for="ancient-woodland">
@@ -396,7 +410,7 @@ crossorigin="" />
 <script>
   // callback used when layer control is clicked
   function toggleLayer(map, datasetName, add) {
-    const layer = layerMap[datasetName]
+    const layer = layerControlsComponent.layerMap[datasetName]
     if (add) {
       console.log("Debug: ", layer, datasetName)
       map.addLayer(layer)
@@ -437,10 +451,8 @@ crossorigin="" />
   const $zoomControls = document.querySelector('[data-module="zoom-controls"]')
   const zoomControlsComponent = new ZoomControls($zoomControls, theMap, mappos.zoom).init({})
 
-
+  // config
   var baseUrl = "https://datasette-demo.digital-land.info/view_model"
-  var dlBaseUrl = "http://digital-land.github.io"
-
   var pageSize = 100
 
   // add the OpenStreetMap tiles
@@ -481,7 +493,7 @@ crossorigin="" />
             console.debug(`${geoJsonLayer.getLayers().length} features fetched for ${type_}`);
     }
 
-    function buildUrl(bounds, zoomLevel, type=false, after_rowid=0) {
+    function buildDataUrl(bounds, zoomLevel, type=false, after_rowid=0) {
       var query = "bounded_geography_simplified_paged"
       if (zoomLevel > 11) {query = "bounded_geography_full_paged"}
       if (type) {query = `${query}_by_type`}
@@ -494,62 +506,12 @@ crossorigin="" />
       return url
     }
 
-    var geoJsonLayerOptions = {
-      style: function(feature) {
-        switch (feature.properties.type) {
-          case 'local-authority-district': return {color: "#EE7800", weight: 2};
-          case 'parish': return {color: "#5694ca", weight: 2};
-          case 'conservation-area': return {color: "#78AA00", weight: 2};
-          case 'brownfield-land': return {color: "#0078ff", weight: 2};
-          case 'heritage-coast': return {color: "#912b88", weight: 2};
-          case 'area-of-outstanding-natural-beauty': return {color: "#d53880", weight: 2};
-          case 'ancient-woodland': return {color: "#00703c", weight: 2};
-          case 'protected-wreck-site': return {color: "#d4351c", weight: 2};
-          case 'green-belt': return {color: "#85994b", weight: 2};
-        }
-      },
-      onEachFeature: onEachFeature,
-    }
-
-    var geojsonLocalAuthorityDistrict = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonConservationArea = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonHeritageCoast = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonAreaOfOutstandingNaturalBeauty = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonAncientWoodland = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonParish = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonProtectedWreckSite = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonGreenBelt = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    //var geojsonBrownfieldLand = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonBrownfieldLand = DLMaps.brownfieldSites.geojsonToLayer(false, geoJsonLayerOptions).addTo(theMap)
-  
-    var layerMap = {
-      "local-authority-district": geojsonLocalAuthorityDistrict,
-      "conservation-area": geojsonConservationArea,
-      "brownfield-land": geojsonBrownfieldLand,
-      "heritage-coast": geojsonHeritageCoast,
-      "area-of-outstanding-natural-beauty": geojsonAreaOfOutstandingNaturalBeauty,
-      "ancient-woodland": geojsonAncientWoodland,
-      "parish": geojsonParish,
-      "protected-wreck-site": geojsonProtectedWreckSite,
-      "green-belt": geojsonGreenBelt,
-    }
-
-    function onEachFeature(feature, layer) {
-      if (feature.properties) {
-        layer.bindPopup(`
-          <h3>${feature.properties.name}</h3>
-          ${feature.properties.type}<br>
-          <a href=${dlBaseUrl}${feature.properties.slug}>${feature.properties.slug}</a>
-        `);
-      }
-    }
-
     function fetchAll(bounds=theMap.getBounds()) {
       if (controller) {
         console.log("controller.abort()")
         controller && controller.abort()
       }
-      for (const [key, value] of Object.entries(layerMap)) {
+      for (const [key, value] of Object.entries(layerControlsComponent.layerMap)) {
         value.clearLayers()
       }
       controller = new AbortController();
@@ -565,10 +527,10 @@ crossorigin="" />
         }
 
         console.log("fetching", type_)
-        fetchFeatures(progressCallback, buildUrl(bounds, zoom, type_), layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
+        fetchFeatures(progressCallback, buildDataUrl(bounds, zoom, type_), layerControlsComponent.layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
           console.log("fetch complete", type_)
-        }).catch(() => {
-          console.log("caught error from fetch", type_)
+        }).catch((e) => {
+          console.log("caught error from fetch", type_, e)
           console.error
         })
       })
