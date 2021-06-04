@@ -60,7 +60,7 @@
         {{ layerControlItem(layer) }}
         {% endfor %}
         {%- if layers_with_constraint|length %}
-          <p class="govuk-body">Large datasets are only visible at zoom level <span data-layers-controls-zoom-constraint="10">10</span> or higher.</p>
+          <p class="govuk-body govuk-!-margin-top-3 govuk-!-margin-bottom-4">Large datasets are only visible at zoom level <span data-layers-controls-zoom-constraint="10">10</span> or higher.</p>
         {% for layer in layers_with_constraint %}
         {{ layerControlItem(layer) }}
         {% endfor %}

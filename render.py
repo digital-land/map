@@ -67,8 +67,13 @@ def render_national_map():
         {
             "dataset": "park-and-garden",
             "label": "Parks and gardens",
-            "colour": "#36D373",
+            "colour": "#0EB951",
             "active_zoom_level": 10,
+        },
+        {
+            "dataset": "protected-wreck-site",
+            "label": "Protected wreck sites",
+            "colour": "#0b0c0c",
         },
     ]
     render(
