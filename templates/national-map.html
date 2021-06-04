@@ -34,7 +34,9 @@
   </div>
 
   {% macro layerControlItem(layer) %}
-  <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" {% if layer.active_zoom_level %}data-layer-control-zoom={{layer.active_zoom_level}}{% endif %}>
+  <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" 
+  {% if layer.active_zoom_level %}data-layer-control-zoom={{layer.active_zoom_level}}{% endif %} 
+  {% if layer.colour %}data-layer-colour="{{ layer.colour }}"{% endif %}>
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
       <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
@@ -76,7 +78,7 @@
 <script>
   // callback used when layer control is clicked
   function toggleLayer(map, datasetName, add) {
-    const layer = layerMap[datasetName]
+    const layer = layerControlsComponent.layerMap[datasetName]
     if (add) {
       console.log("Debug: ", layer, datasetName)
       map.addLayer(layer)
@@ -117,10 +119,8 @@
   const $zoomControls = document.querySelector('[data-module="zoom-controls"]')
   const zoomControlsComponent = new ZoomControls($zoomControls, theMap, mappos.zoom).init({})
 
-
+  // config
   var baseUrl = "https://datasette-demo.digital-land.info/view_model"
-  var dlBaseUrl = "http://digital-land.github.io"
-
   var pageSize = 100
 
   // add the OpenStreetMap tiles
@@ -161,7 +161,7 @@
             console.debug(`${geoJsonLayer.getLayers().length} features fetched for ${type_}`);
     }
 
-    function buildUrl(bounds, zoomLevel, type=false, after_rowid=0) {
+    function buildDataUrl(bounds, zoomLevel, type=false, after_rowid=0) {
       var query = "bounded_geography_simplified_paged"
       if (zoomLevel > 11) {query = "bounded_geography_full_paged"}
       if (type) {query = `${query}_by_type`}
@@ -174,62 +174,12 @@
       return url
     }
 
-    var geoJsonLayerOptions = {
-      style: function(feature) {
-        switch (feature.properties.type) {
-          case 'local-authority-district': return {color: "#EE7800", weight: 2};
-          case 'parish': return {color: "#5694ca", weight: 2};
-          case 'conservation-area': return {color: "#78AA00", weight: 2};
-          case 'brownfield-land': return {color: "#0078ff", weight: 2};
-          case 'heritage-coast': return {color: "#912b88", weight: 2};
-          case 'area-of-outstanding-natural-beauty': return {color: "#d53880", weight: 2};
-          case 'ancient-woodland': return {color: "#00703c", weight: 2};
-          case 'protected-wreck-site': return {color: "#d4351c", weight: 2};
-          case 'green-belt': return {color: "#85994b", weight: 2};
-        }
-      },
-      onEachFeature: onEachFeature,
-    }
-
-    var geojsonLocalAuthorityDistrict = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonConservationArea = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonHeritageCoast = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonAreaOfOutstandingNaturalBeauty = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonAncientWoodland = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonParish = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonProtectedWreckSite = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonGreenBelt = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    //var geojsonBrownfieldLand = L.geoJSON(false, geoJsonLayerOptions).addTo(theMap)
-    var geojsonBrownfieldLand = DLMaps.brownfieldSites.geojsonToLayer(false, geoJsonLayerOptions).addTo(theMap)
-  
-    var layerMap = {
-      "local-authority-district": geojsonLocalAuthorityDistrict,
-      "conservation-area": geojsonConservationArea,
-      "brownfield-land": geojsonBrownfieldLand,
-      "heritage-coast": geojsonHeritageCoast,
-      "area-of-outstanding-natural-beauty": geojsonAreaOfOutstandingNaturalBeauty,
-      "ancient-woodland": geojsonAncientWoodland,
-      "parish": geojsonParish,
-      "protected-wreck-site": geojsonProtectedWreckSite,
-      "green-belt": geojsonGreenBelt,
-    }
-
-    function onEachFeature(feature, layer) {
-      if (feature.properties) {
-        layer.bindPopup(`
-          <h3>${feature.properties.name}</h3>
-          ${feature.properties.type}<br>
-          <a href=${dlBaseUrl}${feature.properties.slug}>${feature.properties.slug}</a>
-        `);
-      }
-    }
-
     function fetchAll(bounds=theMap.getBounds()) {
       if (controller) {
         console.log("controller.abort()")
         controller && controller.abort()
       }
-      for (const [key, value] of Object.entries(layerMap)) {
+      for (const [key, value] of Object.entries(layerControlsComponent.layerMap)) {
         value.clearLayers()
       }
       controller = new AbortController();
@@ -245,10 +195,10 @@
         }
 
         console.log("fetching", type_)
-        fetchFeatures(progressCallback, buildUrl(bounds, zoom, type_), layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
+        fetchFeatures(progressCallback, buildDataUrl(bounds, zoom, type_), layerControlsComponent.layerMap[type_], controller.signal, type_).then(function (geoJsonLayer) {
           console.log("fetch complete", type_)
-        }).catch(() => {
-          console.log("caught error from fetch", type_)
+        }).catch((e) => {
+          console.log("caught error from fetch", type_, e)
           console.error
         })
       })
