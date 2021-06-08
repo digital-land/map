@@ -137,7 +137,7 @@ NationalMapController.prototype.fetchFeatures = function (progress, url, geoJson
   return new Promise((resolve, reject) => fetch(url, { signal })
     .then(response => {
       if (response.status !== 200) {
-        throw `${response.status}: ${response.statusText}`
+        throw new Error(`${response.status}: ${response.statusText}`)
       }
 
       response.json().then(data => {
