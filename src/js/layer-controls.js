@@ -4,15 +4,6 @@ function isFunction (x) {
   return Object.prototype.toString.call(x) === '[object Function]'
 }
 
-function nodeListForEach (nodes, callback) {
-  if (window.NodeList.prototype.forEach) {
-    return nodes.forEach(callback)
-  }
-  for (var i = 0; i < nodes.length; i++) {
-    callback.call(window, nodes[i], i, nodes)
-  }
-}
-
 function LayerControls ($module, leafletMap) {
   this.$module = $module
   this.map = leafletMap
@@ -38,7 +29,7 @@ LayerControls.prototype.init = function (params) {
   // listen for changes to URL
   var boundSetControls = this.setControls.bind(this)
   window.addEventListener('popstate', function (event) {
-    console.log("URL has changed - back button")
+    console.log('URL has changed - back button')
     boundSetControls()
   })
 
