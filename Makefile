@@ -1,4 +1,5 @@
 DATASET_PATH := data/dataset.csv
+REMOTE_FRONTEND :=https://raw.githubusercontent.com/digital-land/frontend/main/
 LOCAL_FRONTEND :=../frontend
 SOURCE_URL=https://raw.githubusercontent.com/digital-land/
 LFS_SOURCE_URL=https://media.githubusercontent.com/media/digital-land/
@@ -43,14 +44,20 @@ latest/css:
 	rsync -r $(LOCAL_FRONTEND)/digital_land_frontend/static/stylesheets/ docs/static/stylesheets/
 
 latest/js:
-	mkdir -p docs/static/javascripts
+	mkdir -p docs/
 	cd $(LOCAL_FRONTEND) && gulp js
 	rsync -r $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/ docs/static/javascripts/
+	cp $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/dl-maps.js docs/
+	cp $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/dl-national-map-controller.js docs/
+	cp $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/dl-national-map-controller.js docs/
 
-local: assets copy map/local
+local: assets map/local
 
-copy:
+fetch-js:
 	mkdir -p docs/
-	cp -r src/js/* docs/
+	curl -qsL '$(REMOTE_FRONTEND)digital_land_frontend/static/javascripts/dl-maps.js' > docs/dl-maps.js
+	curl -qsL '$(REMOTE_FRONTEND)digital_land_frontend/static/javascripts/dl-national-map-controller.js' > docs/dl-national-map-controller.js
 
-render: copy map
+render: fetch-js map
+
+local: latest/js map/local
