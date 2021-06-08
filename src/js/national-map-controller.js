@@ -99,7 +99,7 @@ NationalMapController.prototype.fetchAll = function (bounds = this.map.getBounds
     console.log('controller.abort()')
     this.controller && this.controller.abort()
   }
-
+  // eslint-disable-next-line no-unused-vars
   for (const [key, value] of Object.entries(this.layerControlsComponent.layerMap)) {
     value.clearLayers()
   }
