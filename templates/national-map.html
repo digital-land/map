@@ -4,7 +4,7 @@
 {% block pageTitle %}National map of planning data | Digital Land{% endblock %}
 
 {%- block dlHead %}
-<script src="./leaflet.permalink.min.js"></script>
+<script src="{{ staticPath | default('/static') }}/javascripts/vendor/leaflet.permalink.min.js"></script>
 {% endblock -%}
 
 {% block content %}
@@ -73,7 +73,6 @@
 
 {% block bodyEnd %}
 {{ super() }}
-<script src="./dl-maps.js"></script>
 <script src="./dl-national-map-controller.js"></script>
 <script>
     const mapID = "mapid"

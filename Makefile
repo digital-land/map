@@ -44,18 +44,17 @@ latest/css:
 	rsync -r $(LOCAL_FRONTEND)/digital_land_frontend/static/stylesheets/ docs/static/stylesheets/
 
 latest/js:
-	mkdir -p docs/
+	mkdir -p docs/static/javascripts/vendor/
 	cd $(LOCAL_FRONTEND) && gulp js
 	rsync -r $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/ docs/static/javascripts/
-	cp $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/dl-maps.js docs/
-	cp $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/dl-national-map-controller.js docs/
+	cp $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/dl-maps.js docs/static/javascripts/
+	cp $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/vendor/leaflet.permalink.min.js docs/static/javascripts/vendor/leaflet.permalink.min.js
 	cp $(LOCAL_FRONTEND)/digital_land_frontend/static/javascripts/dl-national-map-controller.js docs/
 
 local: assets map/local
 
 fetch-js:
 	mkdir -p docs/
-	curl -qsL '$(REMOTE_FRONTEND)digital_land_frontend/static/javascripts/dl-maps.js' > docs/dl-maps.js
 	curl -qsL '$(REMOTE_FRONTEND)digital_land_frontend/static/javascripts/dl-national-map-controller.js' > docs/dl-national-map-controller.js
 
 render: fetch-js map
