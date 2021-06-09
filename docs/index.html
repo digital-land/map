@@ -17,7 +17,10 @@
 
 
     
-	<meta name="digital-land:template" content="dlf-base--full-width.html"><!-- should make this optional, no need to load if not showing a map -->
+	<meta name="digital-land:template" content="dlf-base--full-width.html">
+<script src="https://polyfill.io/v3/polyfill.min.js?features=fetch%2CPromise%2Ces6%2Ces5%2Ces2015%2Ces2016%2CURL%2CURLSearchParams%2CObject.entries%2CObject.fromEntries%2CAbortController"></script>
+
+<!-- should make this optional, no need to load if not showing a map -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
 integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
 crossorigin="" />
@@ -39,7 +42,7 @@ crossorigin="" />
 	<link href="https://digital-land.github.io/stylesheets/dl-frontend.css" rel="stylesheet" />
 	<link href="https://digital-land.github.io/stylesheets/vendor/govuk-accessible-autocomplete.min.css" rel="stylesheet" media="all" />
 	
-<script src="./leaflet.permalink.min.js"></script>
+<script src="https://digital-land.github.io/javascripts/vendor/leaflet.permalink.min.js"></script>
 
     
     
@@ -477,7 +480,6 @@ crossorigin="" />
 	
 
 
-<script src="./dl-maps.js"></script>
 <script src="./dl-national-map-controller.js"></script>
 <script>
     const mapID = "mapid"
