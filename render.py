@@ -75,6 +75,12 @@ def render_national_map():
             "label": "Protected wreck sites",
             "colour": "#0b0c0c",
         },
+        {
+            "dataset": "listed-building",
+            "label": "Listed buildings",
+            "colour": "#F9C744",
+            "active_zoom_level": 12,
+        },
     ]
     render(
         "index.html",
