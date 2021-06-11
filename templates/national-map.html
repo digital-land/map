@@ -36,7 +36,8 @@
   {% macro layerControlItem(layer) %}
   <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" 
   {% if layer.active_zoom_level %}data-layer-control-zoom={{layer.active_zoom_level}}{% endif %} 
-  {% if layer.colour %}data-layer-colour="{{ layer.colour }}"{% endif %}>
+  {% if layer.colour %}data-layer-colour="{{ layer.colour }}"{% endif %}
+  {% if layer.radius %}data-layer-marker-radius="{{ layer.radius }}"{% endif %}>
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
       <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
