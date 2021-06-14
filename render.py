@@ -82,6 +82,33 @@ def render_national_map():
             "active_zoom_level": 12,
             "radius": 15,
         },
+        {
+            "dataset": "special-area-of-conservation",
+            "label": "Special areas of conservation",
+            "colour": "#7A8705",
+        },
+        {
+            "dataset": "scheduled-monument",
+            "label": "Scheduled monuments",
+            "colour": "#0F9CDA",
+        },
+        {
+            "dataset": "heritage-at-risk",
+            "label": "Heritage at risk",
+            "colour": "#8D73AF",
+        },
+        {
+            "dataset": "certificate-of-immunity",
+            "label": "Certificate of immunity",
+            "colour": "#D8760D",
+            "radius": 20,
+        },
+        {
+            "dataset": "building-preservation-notice",
+            "label": "Building preservation notices",
+            "colour": "#f944c7",
+            "radius": 20,
+        },
     ]
     render(
         "index.html",
