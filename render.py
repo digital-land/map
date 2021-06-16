@@ -109,6 +109,13 @@ def render_national_map():
             "colour": "#f944c7",
             "radius": 20,
         },
+        {"dataset": "ramsar", "label": "Ramsar", "colour": "#7fcdff"},
+        {
+            "dataset": "site-of-special-scientific-interest",
+            "label": "Sites of special scientific interest",
+            "colour": "#308fac",
+            "active_zoom_level": 10,
+        },
     ]
     render(
         "index.html",
