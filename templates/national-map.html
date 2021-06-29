@@ -4,7 +4,8 @@
 {% block pageTitle %}National map of planning data | Digital Land{% endblock %}
 
 {%- block dlHead %}
-<script src="{{ staticPath | default('/static') }}/javascripts/vendor/leaflet.permalink.min.js"></script>
+<script src="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.js"></script>
+<link href="https://unpkg.com/maplibre-gl@1.14.0-rc.1/dist/maplibre-gl.css" rel="stylesheet" />
 {% endblock -%}
 
 {% block content %}
@@ -35,16 +36,12 @@
 
   {% macro layerControlItem(layer) %}
   <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" 
-  {% if layer.active_zoom_level %}data-layer-control-zoom={{layer.active_zoom_level}}{% endif %} 
-  {% if layer.colour %}data-layer-colour="{{ layer.colour }}"{% endif %}
-  {% if layer.radius %}data-layer-marker-radius="{{ layer.radius }}"{% endif %}>
+  {% if layer.type %}data-layer-data-type={{layer.type}}{% endif %} 
+  {% if layer.paint_options %}data-style-options="{{ layer.paint_options.colour }},{{ layer.paint_options.opacity }}"{% endif %}>
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
       <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
         {{ layer.label }}
-        {% if layer.active_zoom_level %}
-          <div class="dl-small-text secondary-text">From zoom level {{ layer.active_zoom_level }}</div>
-        {% endif %}
       </label>
     </div>
   </li>
@@ -60,12 +57,6 @@
         {% for layer in layers %}
         {{ layerControlItem(layer) }}
         {% endfor %}
-        {%- if layers_with_constraint|length %}
-          <p class="govuk-body govuk-!-margin-top-3 govuk-!-margin-bottom-4">Large datasets are only visible at zoom level <span data-layers-controls-zoom-constraint="10">10</span> or higher.</p>
-        {% for layer in layers_with_constraint %}
-        {{ layerControlItem(layer) }}
-        {% endfor %}
-        {% endif -%}
       </ul>
     </div>
   </div>
@@ -76,10 +67,10 @@
 {{ super() }}
 <script src="./dl-national-map-controller.js"></script>
 <script>
-    const mapID = "mapid"
-    const $controlsList = document.querySelector('[data-module="layer-controls"]')
-    const $zoomControls = document.querySelector('[data-module="zoom-controls"]')
-
-    const nationalMapController = new NationalMapController(mapID, $controlsList, $zoomControls).init({})
+  // grab html elements
+  const $controlsList = document.querySelector('[data-module="layer-controls"]')
+  const $zoomMod = document.querySelector('[data-module="zoom-controls"]')
+  // init national map
+  const mapController = new MapController($controlsList, $zoomMod).init({})
 </script>
 {% endblock %}
