@@ -57,6 +57,9 @@ fetch-js:
 	mkdir -p docs/
 	curl -qsL '$(REMOTE_FRONTEND)digital_land_frontend/static/javascripts/dl-national-map-controller.js' > docs/dl-national-map-controller.js
 
-render: fetch-js map
+copy-base-json:
+	cp static/base-tile.json docs/
 
-local: latest/js map/local
+render: fetch-js map copy-base-json
+
+local: latest/js map/local copy-base-json
