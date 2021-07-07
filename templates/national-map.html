@@ -41,7 +41,11 @@
     <div class="govuk-checkboxes__item">
       <input class="govuk-checkboxes__input" id="{{ layer.dataset }}" name="{{ layer.dataset }}" type="checkbox" value="{{ layer.dataset }}" {{ "checked='checked'" if layer.checked }}>
       <label class="govuk-label govuk-checkboxes__label" for="{{ layer.dataset }}">
-        {{ layer.label }}
+        <span class="dl-label__key">
+          <span class="dl-label__key__symbol{{ ' dl-label__key__symbol--circle' if layer.type and layer.type == 'point' }}"
+          style="border-color: {{layer.paint_options.colour|default('#003078')}}; background: rgba({{layer.paint_options.colour|default('#003078')|hex_to_rgb}},{{ layer.paint_options.opacity|default('0.5') }});"></span>
+          {{ layer.label }}
+        </span>
       </label>
     </div>
   </li>
