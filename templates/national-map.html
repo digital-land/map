@@ -35,7 +35,7 @@
   </div>
 
   {% macro layerControlItem(layer) %}
-  <li class="govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" 
+  <li class="dl-map__layer-item govuk-!-margin-bottom-2" data-layer-control="{{ layer.dataset }}" 
   {% if layer.type %}data-layer-data-type={{layer.type}}{% endif %} 
   {% if layer.paint_options %}data-style-options="{{ layer.paint_options.colour }},{{ layer.paint_options.opacity }}"{% endif %}>
     <div class="govuk-checkboxes__item">
