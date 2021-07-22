@@ -159,6 +159,13 @@ def render_national_map():
                 "colour": "#308fac",
             },
         },
+        {
+            "dataset": "open-space",
+            "label": "Open spaces",
+            "paint_options": {
+                "colour": "#328478",
+            },
+        },
     ]
     render(
         "index.html",
